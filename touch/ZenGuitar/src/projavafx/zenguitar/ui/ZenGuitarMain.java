@@ -1,24 +1,11 @@
 package projavafx.zenguitar.ui;
 
-import javafx.animation.Animation;
-import javafx.animation.Interpolator;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
-import javafx.animation.TranslateTransitionBuilder;
 import javafx.application.Application;
-import javafx.scene.GroupBuilder;
 import javafx.scene.Scene;
-import javafx.scene.SceneBuilder;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBuilder;
-import javafx.scene.layout.HBoxBuilder;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.CircleBuilder;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class ZenGuitarMain extends Application {
   static int LOW_NOTE = 18;
@@ -34,6 +21,7 @@ public class ZenGuitarMain extends Application {
   public void start(Stage stage) {
     VBox guitarStringsContainer = new VBox();
     guitarStringsContainer.setSpacing(0);
+    guitarStringsContainer.setId("background");
     guitarStringsContainer.getChildren().addAll(
         new Rectangle(STRING_WIDTH, STRING_HEIGHT / 2, Color.TRANSPARENT),
         new GuitarString(LOW_NOTE + 46, NUM_FRETS, STRING_WIDTH, STRING_HEIGHT),
@@ -46,14 +34,7 @@ public class ZenGuitarMain extends Application {
         new GuitarString(LOW_NOTE + 12, NUM_FRETS, STRING_WIDTH, STRING_HEIGHT)
     );
 
-    Scene scene  = SceneBuilder.create()
-      .width(STRING_WIDTH)
-      .height(900)
-      .root(
-          guitarStringsContainer
-      )
-      .build();
-
+    Scene scene = new Scene(guitarStringsContainer, STRING_WIDTH, 900);
     scene.getStylesheets().addAll(ZenGuitarMain.class
         .getResource("zenGuitar.css").toExternalForm());
 

@@ -1,8 +1,10 @@
 package projavafx.zenguitar.ui;
 
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.input.TouchPoint;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -74,20 +76,32 @@ public class GuitarString extends Region {
     _fretLines = new Line[_numFrets];
     for (int idx = 0; idx < _numFrets; idx++) {
       _fretLines[idx] = new Line();
-      _fretLines[idx].setStroke(Color.SILVER);
+      _fretLines[idx].setStroke(Color.rgb(222, 215, 165));
       _fretLines[idx].setStrokeWidth(3);
-    };
+    }
+
+    InnerShadow stringInnerShadow = new InnerShadow();
+    stringInnerShadow.setColor(Color.rgb(0, 0, 0, 0.9));
+    stringInnerShadow.setBlurType(BlurType.TWO_PASS_BOX);
+
+    DropShadow stringDropShadow = new DropShadow();
+    stringDropShadow.setColor(Color.rgb(0, 0, 0, 0.65));
+    stringDropShadow.setBlurType(BlurType.GAUSSIAN);
+    stringDropShadow.setRadius(10);
+    stringDropShadow.setOffsetY(13);
+    stringDropShadow.setInput(stringInnerShadow);
 
     _stringLine = new Polyline();
-    _stringLine.setStroke(Color.BLUE);
+    _stringLine.setStroke(Color.rgb(220, 220, 220));
     _stringLine.setStrokeWidth(10);
+    _stringLine.setEffect(stringDropShadow);
     updateStringLine();
 
     setPrefSize(width, height);
     getChildren().add(_rect);
     for (int idx = 0; idx < _numFrets; idx++) {
       getChildren().add(_fretLines[idx]);
-    };
+    }
     getChildren().add(_stringLine);
 
     setOnTouchPressed(te -> handleTouchPressed(te));
