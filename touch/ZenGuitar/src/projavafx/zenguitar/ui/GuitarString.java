@@ -36,6 +36,7 @@ public class GuitarString extends Region {
   Polyline _stringLine;
   Rectangle _rect;
   Line[] _fretLines;
+  DropShadow _dropShadowStringLine;
 
   // Most recent note value played
   //TODO: Remove?
@@ -84,17 +85,17 @@ public class GuitarString extends Region {
     stringInnerShadow.setColor(Color.rgb(0, 0, 0, 0.9));
     stringInnerShadow.setBlurType(BlurType.TWO_PASS_BOX);
 
-    DropShadow stringDropShadow = new DropShadow();
-    stringDropShadow.setColor(Color.rgb(0, 0, 0, 0.65));
-    stringDropShadow.setBlurType(BlurType.GAUSSIAN);
-    stringDropShadow.setRadius(10);
-    stringDropShadow.setOffsetY(13);
-    stringDropShadow.setInput(stringInnerShadow);
+    _dropShadowStringLine = new DropShadow();
+    _dropShadowStringLine.setColor(Color.rgb(0, 0, 0, 0.65));
+    _dropShadowStringLine.setBlurType(BlurType.GAUSSIAN);
+    _dropShadowStringLine.setRadius(10);
+    _dropShadowStringLine.setOffsetY(13);
+    _dropShadowStringLine.setInput(stringInnerShadow);
 
     _stringLine = new Polyline();
     _stringLine.setStroke(Color.rgb(220, 220, 220));
     _stringLine.setStrokeWidth(10);
-    _stringLine.setEffect(stringDropShadow);
+    _stringLine.setEffect(_dropShadowStringLine);
     updateStringLine();
 
     setPrefSize(width, height);
@@ -135,13 +136,15 @@ public class GuitarString extends Region {
       //release(te.getTouchPoint());
       releaseAll(te);
       _stringLine.setStroke(Color.RED);
+      _dropShadowStringLine.setOffsetY(3);
       play(computeNoteValue(te.getTouchPoint().getX()), te.getTouchPoint(), false);
       //System.out.println("Touched");
     }
   }
 
   void handleTouchReleased(TouchEvent te) {
-    _stringLine.setStroke(Color.BLUE);
+    _stringLine.setStroke(Color.rgb(220, 220, 220));
+    _dropShadowStringLine.setOffsetY(13);
     release(te.getTouchPoint());
     //System.out.println("Released");
   }
@@ -150,7 +153,7 @@ public class GuitarString extends Region {
     if (isHighestTouchOnString(te)) {
       int noteValue = computeNoteValue(te.getTouchPoint().getX());
       if (noteValue != _noteValue) {
-        _stringLine.setStroke(Color.RED);
+        _stringLine.setStroke(Color.rgb(220, 220, 220));
         release(te.getTouchPoint());
         play(computeNoteValue(te.getTouchPoint().getX()), te.getTouchPoint(), true);
         //System.out.println("Moved to another fret");
